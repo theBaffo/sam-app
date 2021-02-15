@@ -5,7 +5,7 @@ exports.route53 = new AWS.Route53();
 
 const DB = require('./db');
 
-const validateRegex = async (name, regex) => {
+const validateRegex = (name, regex) => {
   const matches = name.match(regex);
 
   if (!matches || matches.length === 0) {
@@ -48,7 +48,7 @@ exports.createDNS = async ({ Action, ResourceRecordSet, HostedZoneId, ApiKey }) 
     const user = await DB.getUser(ApiKey);
 
     // Validate regex
-    await validateRegex(name, user.regex);
+    validateRegex(name, user.regex);
 
     // Get DNS Record
     const record = await DB.getDnsRecord(name);
@@ -76,7 +76,7 @@ exports.upsertDNS = async ({ Action, ResourceRecordSet, HostedZoneId, ApiKey }) 
     const user = await DB.getUser(ApiKey);
 
     // Validate regex
-    await validateRegex(name, user.regex);
+    validateRegex(name, user.regex);
 
     // Perform DNS Change
     const result = _changeResourceDNS({ Action, ResourceRecordSet, HostedZoneId });
@@ -98,7 +98,7 @@ exports.deleteDNS = async ({ Action, ResourceRecordSet, HostedZoneId, ApiKey }) 
     const user = await DB.getUser(ApiKey);
 
     // Validate regex
-    await validateRegex(name, user.regex);
+    validateRegex(name, user.regex);
 
     // Get DNS Record
     const record = await DB.getDnsRecord(name);

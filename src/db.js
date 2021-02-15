@@ -19,7 +19,7 @@ exports.getDnsRecord = async (name) => {
   };
 
   const data = await docClient.get(params).promise();
-  return data.Item;
+  return data.Item || null;
 };
 
 exports.getDnsRecords = async () => {
@@ -29,7 +29,7 @@ exports.getDnsRecords = async () => {
   };
 
   const data = await docClient.scan(params).promise();
-  const items = data.Items; // .filter(item => !item.deleted);
+  const items = data.Items || []; // .filter(item => !item.deleted);
 
   // Return response
   return items;
@@ -94,7 +94,7 @@ exports.getUser = async (apiKey) => {
   };
 
   const data = await docClient.get(params).promise();
-  const item = data.Item;
+  const item = data.Item || null;
 
   if (!item || item.deleted) {
     throw new Error('API Key not valid');
