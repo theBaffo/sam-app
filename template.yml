@@ -12,6 +12,10 @@ Description: >-
 Transform:
 - AWS::Serverless-2016-10-31
 
+Parameters:
+  HostedZoneId:
+    Type: String
+
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
@@ -29,12 +33,14 @@ Resources:
         # Give Create/Read/Update/Delete Permissions to the DnsRecordTable
         - DynamoDBCrudPolicy:
             TableName: !Ref DnsRecordTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserTable
       Environment:
         Variables:
           # Make table name accessible as environment variable from function code during execution
           DNS_RECORD_TABLE: !Ref DnsRecordTable
           USER_TABLE: !Ref UserTable
-          HOSTED_ZONE_ID:
+          HOSTED_ZONE_ID: !Ref HostedZoneId
       Events:
         Api:
           Type: Api
@@ -53,12 +59,14 @@ Resources:
         # Give Create/Read/Update/Delete Permissions to the DnsRecordTable
         - DynamoDBCrudPolicy:
             TableName: !Ref DnsRecordTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserTable
       Environment:
         Variables:
           # Make table name accessible as environment variable from function code during execution
           DNS_RECORD_TABLE: !Ref DnsRecordTable
           USER_TABLE: !Ref UserTable
-          HOSTED_ZONE_ID:
+          HOSTED_ZONE_ID: !Ref HostedZoneId
       Events:
         Api:
           Type: Api
