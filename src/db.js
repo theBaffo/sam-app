@@ -4,9 +4,15 @@ const userTableName = process.env.USER_TABLE;
 
 // Create a DocumentClient that represents the query to add an item
 const dynamodb = require('aws-sdk/clients/dynamodb');
+const docClient = new dynamodb.DocumentClient();
+
+/*
+Used for local testing
+
 const docClient = new dynamodb.DocumentClient({
   endpoint: 'http://dynamodb:8000'
 });
+*/
 
 /*
  * DNS Record Table
